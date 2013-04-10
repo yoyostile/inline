@@ -1,0 +1,33 @@
+.span2
+  %ul.nav.nav-list
+    %li.nav-header
+      Venues
+    %li{ "ng-repeat" => "line in lines | filter:isPresent" }
+      %a{ href: '#', "ng-click" => "lineMap.panTo(line.marker.getPosition())" }
+        {{line.name}} ({{line.people.length}})
+
+.span10
+  .page-header
+    %h1 Line Up!
+  %div{ "ng-repeat" => "line in lines", "ui-map-marker" => "myMarkers[$index]", "ui-event" => "{'map-click': 'openLineInfo(line)'}" }
+
+  %div.map-overlay{ "ui-map-info-window" => "lineInfoWindow" }
+    %h3 Venue Infos
+    %label Name: 
+    %input{ "ng-model" => "currentName", type: "text" }
+    %br
+    %label Address:
+    %input{ "ng-model" => "currentAddress", type: "text" }
+    %br
+    %label In line since:
+    {{currentLine.people[0].start_time | date:'yyyy-MM-dd HH:mm:ss Z'}}
+    %br
+    %br
+    %a{ href: '#', 'ng-click' => "setLine(currentLine, currentName, currentAddress)"}
+      Save
+    %a{ href: '#', 'ng-click' => "enqueue(currentLine)" }
+      Enqueue
+    %a{ href: '#', 'ng-click' => "dequeue(currentLine)" }
+      Dequeue
+  %div#map_canvas.map.span10{ "ui-map" => "lineMap", "ui-event" => "{'map-click': 'addLine($event)'}", "ui-options" => "mapOptions" }
+

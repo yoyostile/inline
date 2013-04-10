@@ -1,0 +1,16 @@
+!!!
+%html{ 'ng-app' => 'inline' }
+  %head
+    %title Inline
+    = stylesheet_link_tag    "application", :media => "all" 
+    = javascript_include_tag "application" 
+    = javascript_include_tag "http://maps.googleapis.com/maps/api/js?sensor=false"
+    = csrf_meta_tags 
+
+  %body{ "ng-controller" => "LinesCtrl" }
+    .navbar
+      .navbar-inner
+        = link_to 'Line Up!', '#', class: 'brand'
+    .container-fluid
+      .row-fluid
+        = yield

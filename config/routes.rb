@@ -25,6 +25,11 @@ Inline::Application.routes.draw do
   #     end
   #   end
 
+  root :to => 'line#index'
+
+  resources :line, only: [ :index, :create ]
+  resources :person, only: [ :create, :destroy ]
+
   # Sample resource route with sub-resources:
   #   resources :products do
   #     resources :comments, :sales
