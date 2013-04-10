@@ -2,8 +2,8 @@
   %ul.nav.nav-list
     %li.nav-header
       Venues
-    %li{ "ng-repeat" => "line in lines | filter:isPresent" }
-      %a{ href: '#', "ng-click" => "lineMap.panTo(line.marker.getPosition())" }
+    %li{ "ng-repeat" => "line in lines | filter: { name: query } | filter:isPresent" }
+      %a{ href: '#', "ng-click" => "lineMap.panTo(line.marker.getPosition()); openLineInfo(line);" }
         {{line.name}} ({{line.people.length}})
 
 .span10
@@ -29,5 +29,5 @@
       Enqueue
     %a{ href: '#', 'ng-click' => "dequeue(currentLine)" }
       Dequeue
-  %div#map_canvas.map.span10{ "ui-map" => "lineMap", "ui-event" => "{'map-click': 'addLine($event)'}", "ui-options" => "mapOptions" }
+  %div#map_canvas.map{ "ui-map" => "lineMap", "ui-event" => "{'map-click': 'addLine($event)'}", "ui-options" => "mapOptions" }
 

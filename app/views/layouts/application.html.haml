@@ -11,6 +11,10 @@
     .navbar
       .navbar-inner
         = link_to 'Line Up!', '#', class: 'brand'
+        %ul.nav
+          %li.navbar-search.pull-left
+            %input.input-medium.search-query{ type: "text", placeholder: "Search", "ng-model" =>  "query" }
+
     .container-fluid
       .row-fluid
         = yield

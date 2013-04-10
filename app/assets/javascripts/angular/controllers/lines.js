@@ -6,7 +6,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
   });
 
   $scope.myMarkers = [];
-
+  $scope.query = "";
   $scope.mapOptions = {
   	center: new google.maps.LatLng(50.9406645, 6.9599115),
   	zoom: 15,
