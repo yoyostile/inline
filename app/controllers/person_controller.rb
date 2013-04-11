@@ -13,7 +13,7 @@ class PersonController < ActionController::Base
   def destroy
     if request.xhr?
       @person = Person.find(params[:id])
-      @person.destroy
+      @person.update_attribute("active", false);
       head :ok
     else
       redirect_to root_path

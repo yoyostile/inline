@@ -57,7 +57,31 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     $scope.currentLine = line;
     $scope.currentName = line.name;
     $scope.currentAddress = line.address;
+    var p = firstActivePerson(line);
+    $scope.currentTime = (p) ? p.start_time : '';
   	$scope.lineInfoWindow.open($scope.lineMap, line.marker);
+  }
+
+  $scope.activePeople = function(line) {
+    var cnt = 0;
+    $.each(line.people, function(i, person) {
+      if(person.active)
+        cnt++;
+    });
+    return cnt;
+  }
+
+  var firstActivePerson = function(line) {
+    var p;
+    if(line.people) {
+      $.each(line.people, function(i, person) {
+        if(person.active) {
+          p = person;
+          return false;
+        }
+      });
+    }
+    return p;
   }
 
   $scope.setLine = function(line, name, address) {
@@ -76,7 +100,8 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
 
   $scope.enqueue = function(line) {
     var queueObj = {
-      line_id: line.id
+      line_id: line.id,
+      active: true
     }
     $http.post('/person', queueObj).success(function(data) {
       queueObj.id = parseInt(data.id);
@@ -88,7 +113,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
 
   $scope.dequeue = function(line) {
     var id = line.people[0].id;
-    line.people.shift();
+    line.people[0].active = false;
     $http.delete('/person/' + id).success(function(data) {
       console.log('dequeued');
     });

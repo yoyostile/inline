@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130410201424) do
+ActiveRecord::Schema.define(:version => 20130411090920) do
 
   create_table "lines", :force => true do |t|
     t.string   "name"
@@ -26,8 +26,9 @@ ActiveRecord::Schema.define(:version => 20130410201424) do
     t.date     "start_time"
     t.date     "stop_time"
     t.integer  "line_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+    t.boolean  "active",     :default => true
   end
 
   add_index "people", ["line_id"], :name => "index_people_on_line_id"
