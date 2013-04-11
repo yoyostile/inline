@@ -23,11 +23,11 @@
     {{currentTime | date:'yyyy-MM-dd HH:mm:ss Z'}}
     %br
     %br
-    %a{ href: '#', 'ng-click' => "setLine(currentLine, currentName, currentAddress)"}
+    %a{ href: '#', 'ng-click' => "setLine($event, currentLine, currentName, currentAddress)"}
       Save
-    %a{ href: '#', 'ng-click' => "enqueue(currentLine)" }
+    %a{ href: '#', 'ng-click' => "enqueue($event, currentLine)" }
       Enqueue
-    %a{ href: '#', 'ng-click' => "dequeue(currentLine)" }
+    %a{ href: '#', 'ng-click' => "dequeue($event, currentLine)" }
       Dequeue
   %div#map_canvas.map{ "ui-map" => "lineMap", "ui-event" => "{'map-click': 'addLine($event)'}", "ui-options" => "mapOptions" }
 

@@ -14,7 +14,8 @@ class LineController < ActionController::Base
 
   def create
     if request.xhr?
-      @line = Line.create(params[:line])
+      @line = Line.where(name: params[:name], latitude: params[:line]["latitude"], longitude: params[:line]["longitude"]).first
+      @line = Line.create(params[:line]) unless @line
       render json: @line.id
     else
       redirect_to root_path

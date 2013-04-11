@@ -50,6 +50,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
         people: []
       };
       $scope.lines.push(newLine);
+      $scope.openLineInfo(newLine);
     });
   }
 
@@ -84,7 +85,8 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     return p;
   }
 
-  $scope.setLine = function(line, name, address) {
+  $scope.setLine = function($event, line, name, address) {
+    $event.stopImmediatePropagation();
     line.name = name;
     line.address = address;
     var lineObj = {
@@ -98,7 +100,8 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     });
   }
 
-  $scope.enqueue = function(line) {
+  $scope.enqueue = function($event, line) {
+    $event.stopImmediatePropagation();
     var queueObj = {
       line_id: line.id,
       active: true
@@ -111,9 +114,16 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     });
   }
 
-  $scope.dequeue = function(line) {
-    var id = line.people[0].id;
-    line.people[0].active = false;
+  $scope.dequeue = function($event, line) {
+    $event.stopImmediatePropagation();
+    var id;
+    $.each(line.people, function(i, person) {
+      if(person.active) {
+        id = person.id;
+        person.active = false;
+        return false;
+      }
+    });
     $http.delete('/person/' + id).success(function(data) {
       console.log('dequeued');
     });
