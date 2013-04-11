@@ -11,7 +11,7 @@ class LineController < ActionController::Base
 							:layout => 'layouts/application'
 		end
 	end
-
+  
   def create
     if request.xhr?
       @line = Line.where(name: params[:name], latitude: params[:line]["latitude"], longitude: params[:line]["longitude"]).first
