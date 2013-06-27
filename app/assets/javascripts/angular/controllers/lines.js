@@ -50,6 +50,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
         people: []
       };
       $scope.lines.push(newLine);
+      $scope.openLineInfo(newLine);
     });
   }
 
