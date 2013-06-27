@@ -66,7 +66,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
   $scope.activePeople = function(line) {
     var cnt = 0;
     $.each(line.people, function(i, person) {
-      if(person.active)
+      if(!person.stop_time)
         cnt++;
     });
     return cnt;
@@ -76,7 +76,7 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     var p;
     if(line.people) {
       $.each(line.people, function(i, person) {
-        if(person.active) {
+        if(!person.stop_time) {
           p = person;
           return false;
         }
@@ -85,7 +85,8 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     return p;
   }
 
-  $scope.setLine = function(line, name, address) {
+  $scope.setLine = function($event, line, name, address) {
+    $event.stopImmediatePropagation();
     line.name = name;
     line.address = address;
     var lineObj = {
@@ -99,10 +100,10 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     });
   }
 
-  $scope.enqueue = function(line) {
+  $scope.enqueue = function($event, line) {
+    $event.stopImmediatePropagation();
     var queueObj = {
-      line_id: line.id,
-      active: true
+      line_id: line.id
     }
     $http.post('/person', queueObj).success(function(data) {
       queueObj.id = parseInt(data.id);
@@ -112,12 +113,21 @@ LinesCtrl = ['$scope', '$rootScope', '$http', '$location', function($scope, $roo
     });
   }
 
-  $scope.dequeue = function(line) {
-    var id = line.people[0].id;
-    line.people[0].active = false;
-    $http.delete('/person/' + id).success(function(data) {
-      console.log('dequeued');
+  $scope.dequeue = function($event, line) {
+    $event.stopImmediatePropagation();
+    var id;
+    $.each(line.people, function(i, person) {
+      if(!person.stop_time) {
+        id = person.id;
+        person.stop_time = new Date();
+        return false;
+      }
     });
+    if(id) {
+      $http.delete('/person/' + id).success(function(data) {
+        console.log('dequeued');
+      });
+    }
   }
 
   $scope.isPresent = function(line) {
